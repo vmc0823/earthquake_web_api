@@ -64,9 +64,9 @@ const statusMsg = document.querySelector("#statusMsg");
 const resultsContainer = document.querySelector("#resultsContainer");
 
 //clear old messages
+continentError.textContent = "";
 dateError.textContent = "";
 magError.textContent = "";
-continentError.textContent = "";
 statusMsg.textContent = "";
 resultsContainer.innerHTML = "";
 
@@ -74,6 +74,12 @@ resultsContainer.innerHTML = "";
 const continentValue = continentSelect.value;
 
 let isValid = true;
+
+// validate continent
+if (!continentValue) {
+    continentError.textContent = "Please select a continent.";
+    isValid = false;
+}
 
 // Validate start date
 if (!startDateInput.value) {
@@ -88,24 +94,17 @@ if (isNaN(minMag) || minMag < 0 || minMag > 10) {
     isValid = false;
 }
 
-// validate continent
-if (!continentValue) {
-    continentError.textContent = "Please select a continent.";
-    isValid = false;
-}
-
 if (!isValid) {
     return;
 }
 
 const bounds = getContinentBounds(continentValue);
-
 if (!bounds) {
     statusMsg.textContent = "Invalid continent selection.";
     return;
 }
 
-// ff everything is valid, build API URL
+// if everything is valid, build API URL
 const startDate = startDateInput.value;
 const limit = parseInt(limitInput.value) || 20;
 
